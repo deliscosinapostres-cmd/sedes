@@ -1,0 +1,831 @@
+<?php
+// Página institucional del Gobierno Autónomo Departamental de La Paz
+// Sistema de Gestión de Salud - MediGest GADLP
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>GADLP | Gobierno Autónomo Departamental de La Paz - Salud Digital</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F7FB;
+            overflow-x: hidden;
+        }
+        
+        /* Bandas decorativas con colores de La Paz */
+        .banda-top {
+            height: 5px;
+            background: linear-gradient(90deg, #C8102E 0%, #C8102E 33%, #00A651 33%, #00A651 66%, #808080 66%, #808080 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            padding: 12px 0;
+            position: sticky;
+            top: 5px;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, #C8102E 0%, #00A651 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .navbar-toggler {
+            border: none;
+            background: #C8102E;
+            color: white;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            color: #1a1a2e;
+            transition: all 0.3s;
+            margin: 0 3px;
+            border-radius: 30px;
+            padding: 8px 18px;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #C8102E, #00A651);
+            color: white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(200,16,46,0.95) 0%, rgba(0,166,81,0.9) 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,0.05)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>');
+            background-repeat: repeat;
+            opacity: 0.2;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+        }
+        
+        .badge-gadlp {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        /* Tarjetas de acceso a sistemas */
+        .system-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .system-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(200,16,46,0.15);
+        }
+        
+        .system-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #C8102E 0%, #00A651 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+        
+        .system-icon i {
+            font-size: 32px;
+            color: white;
+        }
+        
+        .system-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1a1a2e;
+        }
+        
+        .btn-system {
+            background: linear-gradient(135deg, #C8102E 0%, #00A651 100%);
+            border: none;
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        /* Sección de contenido general */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #C8102E, #00A651);
+            border-radius: 2px;
+        }
+        
+        .text-center .section-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Tarjetas de unidades/sedes */
+        .unidad-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            height: 100%;
+        }
+        
+        .unidad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        .unidad-img {
+            height: 180px;
+            background: linear-gradient(135deg, #C8102E, #00A651);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .unidad-img i {
+            font-size: 55px;
+            color: rgba(255,255,255,0.85);
+        }
+        
+        .unidad-body {
+            padding: 20px;
+        }
+        
+        /* Tarjetas de comunicados/publicaciones */
+        .comunicado-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s;
+            height: 100%;
+            border-left: 4px solid #C8102E;
+        }
+        
+        .comunicado-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .comunicado-fecha {
+            font-size: 0.7rem;
+            color: #C8102E;
+            font-weight: 600;
+        }
+        
+        /* Timeline transparencia */
+        .timeline-transparencia {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline-transparencia::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #C8102E, #00A651);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #C8102E;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #00A651;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .footer a:hover {
+            color: #C8102E;
+        }
+        
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 4px;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background: #C8102E;
+            transform: translateY(-3px);
+        }
+        
+        /* Botón flotante de accesibilidad */
+        .accessibility-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #C8102E, #00A651);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        .accessibility-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-title { font-size: 1.6rem; }
+            .hero { padding: 50px 0; }
+            .navbar-brand { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="banda-top"></div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-hospital-user me-2" style="color: #C8102E;"></i>
+            Gobierno Autónomo Departamental de La Paz <span style="font-size: 0.7rem; color: #00A651;">GADLP</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="#institucional">Institucional</a></li>
+                <li class="nav-item"><a class="nav-link" href="#unidades">Unidades</a></li>
+                <li class="nav-item"><a class="nav-link" href="#comunicados">Comunicados</a></li>
+                <li class="nav-item"><a class="nav-link" href="#publicaciones">Publicaciones</a></li>
+                <li class="nav-item"><a class="nav-link" href="#transparencia">Transparencia</a></li>
+                <li class="nav-item"><a class="nav-link" href="#nosotros">Sobre Nosotros</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section - Inicio -->
+<section id="inicio" class="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7" data-aos="fade-right">
+                <div class="badge-gadlp">
+                    <i class="fas fa-building me-2"></i> Gobierno Autónomo Departamental de La Paz
+                </div>
+                <h1>Sistema Integral de<br>Gestión de Salud Digital</h1>
+                <p class="lead mb-4 opacity-90">Tecnología al servicio de la salud pública. Acceda a los diferentes sistemas según su perfil.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="#acceso-sistemas" class="btn btn-light btn-lg rounded-pill px-4">
+                        <i class="fas fa-arrow-down me-2"></i>Acceder a Sistemas
+                    </a>
+                    <a href="#unidades" class="btn btn-outline-light btn-lg rounded-pill px-4">
+                        <i class="fas fa-map-marker-alt me-2"></i>Nuestras Unidades
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center" data-aos="fade-left">
+                <div class="mt-3">
+                    <i class="fas fa-mountain fs-1 opacity-50"></i>
+                    <p class="small mt-2 opacity-75">"Por la integración pacífica y el bienestar social"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Acceso a Sistemas -->
+<section id="acceso-sistemas" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill mb-2">
+                <i class="fas fa-microchip me-1"></i> Plataforma Digital
+            </span>
+            <h2 class="section-title">Acceso a los Sistemas</h2>
+            <p class="text-muted mt-3">Seleccione el sistema según su perfil</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="system-card" onclick="location.href='doctor/index.php'">
+                    <div class="system-icon mx-auto"><i class="fas fa-user-md"></i></div>
+                    <h3 class="system-title">Sistema Médico</h3>
+                    <p class="small text-muted">Para profesionales de la salud</p>
+                    <button class="btn-system mt-2">Ingresar <i class="fas fa-arrow-right ms-2"></i></button>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="system-card" onclick="location.href='paciente/paciente_login.php'">
+                    <div class="system-icon mx-auto"><i class="fas fa-user-circle"></i></div>
+                    <h3 class="system-title">Portal del Paciente</h3>
+                    <p class="small text-muted">Para pacientes y familiares</p>
+                    <button class="btn-system mt-2">Ingresar <i class="fas fa-arrow-right ms-2"></i></button>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="system-card" onclick="location.href='admin/admin_login.php'">
+                    <div class="system-icon mx-auto"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="system-title">Sistema Administrativo</h3>
+                    <p class="small text-muted">Para personal administrativo</p>
+                    <button class="btn-system mt-2">Ingresar <i class="fas fa-arrow-right ms-2"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección Institucional -->
+<section id="institucional" class="py-5 bg-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill mb-2">Quiénes Somos</span>
+                <h2 class="section-title">Institución</h2>
+                <p class="mt-3">El Gobierno Autónomo Departamental de La Paz es una institución pública comprometida con el bienestar de todos los paceños, trabajando incansablemente para brindar servicios de salud de calidad, accesibles y oportunos.</p>
+                <p>Nuestra misión es garantizar el derecho a la salud mediante una gestión eficiente, transparente y con calidez humana, llegando a cada rincón del departamento.</p>
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-check-circle text-success fs-4"></i>
+                            <div><strong>+50</strong><br><small>Años de servicio</small></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-check-circle text-success fs-4"></i>
+                            <div><strong>+200k</strong><br><small>Pacientes atendidos</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="bg-light rounded-4 p-4">
+                    <div class="text-center">
+                        <i class="fas fa-building fs-1 text-danger mb-3"></i>
+                        <h5 class="fw-bold">Gobierno Autónomo Departamental de La Paz</h5>
+                        <p class="small text-muted">"Por la integración pacífica y el bienestar social"</p>
+                        <div class="banda-lapaz" style="height: 3px; width: 80px; margin: 15px auto; background: linear-gradient(90deg, #C8102E, #00A651);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Unidades / Sedes -->
+<section id="unidades" class="py-5" style="background: #F5F7FB;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill mb-2">
+                <i class="fas fa-map-marker-alt me-1"></i> Nuestras Instalaciones
+            </span>
+            <h2 class="section-title">Unidades de Salud</h2>
+            <p class="text-muted">Centros de salud públicos conectados al sistema MediGest</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="unidad-card">
+                    <div class="unidad-img"><i class="fas fa-city"></i></div>
+                    <div class="unidad-body">
+                        <h5 class="fw-bold" style="color:#C8102E;">Sede Central - La Paz</h5>
+                        <p class="small text-muted"><i class="fas fa-location-dot me-1 text-danger"></i> Av. 6 de Agosto, Zona Central</p>
+                        <p class="small text-muted"><i class="fas fa-phone me-1 text-success"></i> +591 2 2770000</p>
+                        <span class="badge bg-danger">Matriz</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="unidad-card">
+                    <div class="unidad-img"><i class="fas fa-hospital"></i></div>
+                    <div class="unidad-body">
+                        <h5 class="fw-bold" style="color:#C8102E;">Hospital de Clínicas</h5>
+                        <p class="small text-muted"><i class="fas fa-location-dot me-1 text-danger"></i> Zona Miraflores</p>
+                        <p class="small text-muted"><i class="fas fa-phone me-1 text-success"></i> +591 2 2222222</p>
+                        <span class="badge bg-success">General</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="unidad-card">
+                    <div class="unidad-img"><i class="fas fa-mountain"></i></div>
+                    <div class="unidad-body">
+                        <h5 class="fw-bold" style="color:#C8102E;">Centro de Salud - El Alto</h5>
+                        <p class="small text-muted"><i class="fas fa-location-dot me-1 text-danger"></i> Av. Panamericana, Zona 16 de Julio</p>
+                        <p class="small text-muted"><i class="fas fa-phone me-1 text-success"></i> +591 2 2830000</p>
+                        <span class="badge bg-info text-white">Regional</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="unidad-card">
+                    <div class="unidad-img"><i class="fas fa-tree"></i></div>
+                    <div class="unidad-body">
+                        <h5 class="fw-bold" style="color:#C8102E;">Centro Salud - Viacha</h5>
+                        <p class="small text-muted"><i class="fas fa-location-dot me-1 text-danger"></i> Av. Bolivia, Viacha</p>
+                        <p class="small text-muted"><i class="fas fa-phone me-1 text-success"></i> +591 2 2450000</p>
+                        <span class="badge bg-secondary">Provincial</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+                <div class="unidad-card">
+                    <div class="unidad-img"><i class="fas fa-water"></i></div>
+                    <div class="unidad-body">
+                        <h5 class="fw-bold" style="color:#C8102E;">Centro Salud - Laja</h5>
+                        <p class="small text-muted"><i class="fas fa-location-dot me-1 text-danger"></i> Plaza Principal, Laja</p>
+                        <p class="small text-muted"><i class="fas fa-phone me-1 text-success"></i> +591 2 2560000</p>
+                        <span class="badge bg-secondary">Provincial</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="unidad-card">
+                    <div class="unidad-img"><i class="fas fa-landmark"></i></div>
+                    <div class="unidad-body">
+                        <h5 class="fw-bold" style="color:#C8102E;">Centro de Especialidades</h5>
+                        <p class="small text-muted"><i class="fas fa-location-dot me-1 text-danger"></i> Calle Potosí, La Paz</p>
+                        <p class="small text-muted"><i class="fas fa-phone me-1 text-success"></i> +591 2 2440000</p>
+                        <span class="badge bg-warning text-dark">Especialidades</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Comunicados -->
+<section id="comunicados" class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill mb-2">
+                <i class="fas fa-bullhorn me-1"></i> Últimas Noticias
+            </span>
+            <h2 class="section-title">Comunicados Oficiales</h2>
+            <p class="text-muted">Información importante para la comunidad</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="comunicado-card">
+                    <div class="comunicado-fecha"><i class="far fa-calendar me-1"></i> 15 de Junio, 2026</div>
+                    <h5 class="fw-bold mt-2">Nuevo horario de atención en unidades de salud</h5>
+                    <p class="small text-muted">A partir del 20 de junio, todas las unidades de salud amplían su horario de atención hasta las 20:00 horas.</p>
+                    <a href="#" class="small text-danger text-decoration-none">Leer más <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="comunicado-card">
+                    <div class="comunicado-fecha"><i class="far fa-calendar me-1"></i> 10 de Junio, 2026</div>
+                    <h5 class="fw-bold mt-2">Campaña de vacunación gratuita</h5>
+                    <p class="small text-muted">Del 15 al 30 de junio, campaña de vacunación contra la influenza en todos los centros de salud.</p>
+                    <a href="#" class="small text-danger text-decoration-none">Leer más <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="comunicado-card">
+                    <div class="comunicado-fecha"><i class="far fa-calendar me-1"></i> 5 de Junio, 2026</div>
+                    <h5 class="fw-bold mt-2">Sistema MediGest en mantenimiento</h5>
+                    <p class="small text-muted">El día 18 de junio de 22:00 a 06:00 se realizarán tareas de mantenimiento programado.</p>
+                    <a href="#" class="small text-danger text-decoration-none">Leer más <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Publicaciones -->
+<section id="publicaciones" class="py-5" style="background: #F5F7FB;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-2">
+                <i class="fas fa-book-open me-1"></i> Material Informativo
+            </span>
+            <h2 class="section-title">Publicaciones</h2>
+            <p class="text-muted">Revistas, boletines y documentos de interés</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-center p-3 bg-white rounded-4 h-100">
+                    <i class="fas fa-file-pdf fs-1 text-danger mb-2"></i>
+                    <h6 class="fw-bold">Boletín Epidemiológico</h6>
+                    <small class="text-muted">Mayo 2026</small>
+                    <div><a href="#" class="btn btn-sm btn-outline-danger rounded-pill mt-2">Descargar</a></div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-center p-3 bg-white rounded-4 h-100">
+                    <i class="fas fa-file-pdf fs-1 text-danger mb-2"></i>
+                    <h6 class="fw-bold">Guía de Atención al Paciente</h6>
+                    <small class="text-muted">2026</small>
+                    <div><a href="#" class="btn btn-sm btn-outline-danger rounded-pill mt-2">Descargar</a></div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-center p-3 bg-white rounded-4 h-100">
+                    <i class="fas fa-file-alt fs-1 text-danger mb-2"></i>
+                    <h6 class="fw-bold">Memoria Institucional</h6>
+                    <small class="text-muted">2025</small>
+                    <div><a href="#" class="btn btn-sm btn-outline-danger rounded-pill mt-2">Descargar</a></div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="text-center p-3 bg-white rounded-4 h-100">
+                    <i class="fas fa-newspaper fs-1 text-danger mb-2"></i>
+                    <h6 class="fw-bold">Revista Salud y Bienestar</h6>
+                    <small class="text-muted">Edición 12</small>
+                    <div><a href="#" class="btn btn-sm btn-outline-danger rounded-pill mt-2">Descargar</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Transparencia -->
+<section id="transparencia" class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill mb-2">
+                <i class="fas fa-search me-1"></i> Compromiso Institucional
+            </span>
+            <h2 class="section-title">Transparencia</h2>
+            <p class="text-muted">Gestión abierta y rendición de cuentas</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="timeline-transparencia">
+                    <div class="timeline-item">
+                        <div class="fw-bold text-danger">Presupuesto 2026</div>
+                        <p class="small text-muted">Distribución de recursos asignados al sector salud - Bs. 245 millones</p>
+                        <a href="#" class="small text-success">Ver detalle <i class="fas fa-chart-simple ms-1"></i></a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="fw-bold text-danger">Contrataciones</div>
+                        <p class="small text-muted">Procesos de contratación de personal médico 2026</p>
+                        <a href="#" class="small text-success">Ver detalle <i class="fas fa-file-signature ms-1"></i></a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="fw-bold text-danger">Informes de Gestión</div>
+                        <p class="small text-muted">Reportes trimestrales del Sistema de Salud</p>
+                        <a href="#" class="small text-success">Ver detalle <i class="fas fa-chart-line ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="bg-light rounded-4 p-4">
+                    <h6 class="fw-bold mb-3"><i class="fas fa-chart-simple text-danger me-2"></i>Indicadores de Gestión</h6>
+                    <div class="mb-2"><div class="d-flex justify-content-between"><span>Atenciones realizadas</span><strong>156,842</strong></div><div class="progress"><div class="progress-bar bg-danger" style="width: 78%"></div></div></div>
+                    <div class="mb-2"><div class="d-flex justify-content-between"><span>Porcentaje de ejecución presupuestaria</span><strong>72%</strong></div><div class="progress"><div class="progress-bar bg-success" style="width: 72%"></div></div></div>
+                    <div class="mb-2"><div class="d-flex justify-content-between"><span>Satisfacción de usuarios</span><strong>85%</strong></div><div class="progress"><div class="progress-bar bg-info" style="width: 85%"></div></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sobre Nosotros -->
+<section id="nosotros" class="py-5" style="background: #F5F7FB;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill mb-2">
+                <i class="fas fa-users me-1"></i> Conócenos
+            </span>
+            <h2 class="section-title">Sobre Nosotros</h2>
+            <p class="text-muted">Nuestro equipo y compromiso con la comunidad</p>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-5" data-aos="fade-right">
+                <img src="img/equipo.jpg" alt="Equipo de salud" class="img-fluid rounded-4" onerror="this.src='https://placehold.co/500x400/1a1a2e/white?text=Equipo+GADLP'">
+            </div>
+            <div class="col-lg-7" data-aos="fade-left">
+                <h5 class="fw-bold" style="color:#C8102E;">Misión</h5>
+                <p>Garantizar el derecho a la salud de la población paceña mediante servicios de calidad, accesibles, oportunos y con calidez humana, gestionados con eficiencia y transparencia.</p>
+                <h5 class="fw-bold mt-3" style="color:#00A651;">Visión</h5>
+                <p>Ser referente nacional en gestión de salud pública, reconocido por la excelencia en la atención, innovación tecnológica y participación ciudadana.</p>
+                <h5 class="fw-bold mt-3" style="color:#C8102E;">Valores</h5>
+                <div class="d-flex flex-wrap gap-3 mt-2">
+                    <span class="badge bg-light text-dark border px-3 py-2">🤝 Honestidad</span>
+                    <span class="badge bg-light text-dark border px-3 py-2">⚡ Eficiencia</span>
+                    <span class="badge bg-light text-dark border px-3 py-2">💙 Calidez</span>
+                    <span class="badge bg-light text-dark border px-3 py-2">🔍 Transparencia</span>
+                    <span class="badge bg-light text-dark border px-3 py-2">🌱 Innovación</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contacto y Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <h5 class="fw-bold mb-3"> GADLP</h5>
+                <p class="small opacity-75">Sistema Integral de Gestión de Salud del Gobierno Autónomo Departamental de La Paz.</p>
+                <div class="banda-lapaz" style="height: 3px; width: 50px; background: linear-gradient(90deg, #C8102E, #00A651);"></div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <h6 class="fw-bold mb-3">Contacto</h6>
+                <p class="small mb-2"><i class="fas fa-map-marker-alt me-2 text-danger"></i> Av. 6 de Agosto, La Paz - Bolivia</p>
+                <p class="small mb-2"><i class="fas fa-phone me-2 text-success"></i> +591 2 2770000</p>
+                <p class="small mb-2"><i class="fas fa-envelope me-2 text-danger"></i> info@mspk.gadlp.bo</p>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <h6 class="fw-bold mb-3">Síguenos</h6>
+                <div>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="mt-3">
+                    <a href="#acceso-sistemas" class="text-white-50 small d-block">Acceso a Sistemas</a>
+                    <a href="#unidades" class="text-white-50 small d-block">Nuestras Unidades</a>
+                    <a href="#transparencia" class="text-white-50 small d-block">Transparencia</a>
+                </div>
+            </div>
+        </div>
+        <hr class="opacity-25">
+        <div class="text-center small opacity-50">
+            &copy; <?= date('Y') ?> Gobierno Autónomo Departamental de La Paz - Todos los derechos reservados<br>
+            <i class="fas fa-mountain me-1"></i> "Por la integración pacífica y el bienestar social"
+        </div>
+    </div>
+</footer>
+
+<!-- Botón de accesibilidad flotante -->
+<div class="accessibility-btn" onclick="alert('🧠 Accesibilidad: Puede aumentar el tamaño de texto usando Ctrl + o Cmd +')">
+    <i class="fas fa-universal-access"></i>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        disable: window.innerWidth < 768 ? true : false
+    });
+    
+    // Smooth scroll para enlaces del navbar
+    document.querySelectorAll('.navbar-nav a, .btn[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId && targetId !== '#') {
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Cerrar menú móvil después de clic
+                    const navbarCollapse = document.querySelector('.navbar-collapse');
+                    if (navbarCollapse.classList.contains('show')) {
+                        navbarCollapse.classList.remove('show');
+                    }
+                }
+            }
+        });
+    });
+    
+    // Marcar enlace activo según scroll
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('section[id]');
+        const scrollPos = window.scrollY + 200;
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+                const currentId = section.getAttribute('id');
+                document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + currentId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
